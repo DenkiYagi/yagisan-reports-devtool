@@ -1,0 +1,17 @@
+{
+  "name": "yagisan-reports-devtool",
+  "version": "0.0.0",
+  "description": "yagisan-reports development tool",
+  "author": {
+    "name": "DenkiYagi Inc.",
+    "url": "https://denkiyagi.jp/"
+  },
+  "license": "Apache-2.0",
+  "bin": {
+    "yagisan": "bin/main.js"
+  },
+  "dependencies": {
+    "@msgpack/msgpack": "^3.0.0-beta2",
+    "yargs": "^17.7.2"
+  }
+}

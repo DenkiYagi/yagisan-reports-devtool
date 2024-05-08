@@ -1,0 +1,8 @@
+--class-path src
+--library hxnodejs
+--library extype
+--library jsasync
+--main yagisan.reports.devtool.Main
+--js lib/yagisan-reports-devtool.js
+--dce full
+--define analyzer-optimize
