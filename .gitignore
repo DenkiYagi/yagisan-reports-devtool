@@ -1,2 +1,4 @@
 .haxelib/
 node_modules/
+dump/
+playground/

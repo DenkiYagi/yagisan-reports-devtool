@@ -1,4 +1,4 @@
-package js.npm.msgpack;
+package js.npm;
 
 import haxe.extern.EitherType;
 import js.lib.ArrayBuffer;
