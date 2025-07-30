@@ -3,6 +3,7 @@ package yagisan.reports.devtool;
 import js.Node.process;
 import js.npm.yargs.YArgs.yargs;
 import js.npm.yargs.YArgsHelpers.hideBin;
+import yagisan.reports.devtool.command.GlyphdataCommand;
 import yagisan.reports.devtool.command.YrtPackCommand;
 
 function main() {
@@ -86,6 +87,37 @@ function main() {
                 argv -> yrtAlphaPack({
                     xmlPath: argv.xml,
                     assets: argv.asset ?? [],
+                    outputPath: argv.out,
+                })
+            );
+        },
+        _ -> root.showHelp()
+    );
+
+    root.command(
+        "glyphdata",
+        "Glyphdata Manipulation",
+        cmd -> {
+            cmd.command(
+                "generate <font>",
+                "Generate glyphdata from a font file",
+                subcmd -> {
+                    subcmd.positional("font", {
+                        describe: "Font file path",
+                        type: String,
+                    });
+                    subcmd.option("out", {
+                        describe: "Set output file path",
+                        type: String,
+                        alias: ["O"],
+                    });
+                    subcmd.check((argv, options) -> glyphdataGenerateCheck({
+                        fontPath: argv.font,
+                        outputPath: argv.out,
+                    }));
+                },
+                argv -> glyphdataGenerate({
+                    fontPath: argv.font,
                     outputPath: argv.out,
                 })
             );
