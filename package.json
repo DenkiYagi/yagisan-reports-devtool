@@ -11,6 +11,7 @@
     "yagisan": "bin/main.js"
   },
   "dependencies": {
+    "@denkiyagi/fontkit": "2.0.4-mod.2025.1",
     "@msgpack/msgpack": "^3.1.2",
     "yargs": "^18.0.0"
   },
