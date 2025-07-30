@@ -3,8 +3,6 @@ package yagisan.reports.devtool.command;
 import extype.Nullable;
 import extype.ReadOnlyArray;
 import extype.Tuple.Tuple2;
-import extype.extern.Mixed.Mixed2;
-import haxe.DynamicAccess;
 import js.lib.Promise;
 import js.lib.Uint8Array;
 import js.node.Buffer;
@@ -188,10 +186,4 @@ typedef YrtAlphaPackParameter = {
 typedef AssetDefinition = {
     final path:String;
     final id:String;
-}
-
-@:jsRequire("node:fs/promises")
-extern class FsPromises {
-    static function writeFile(filename:FsPath, data:Buffer, ?options:Mixed2<String, FsWriteFileOptions>):Promise<Void>;
-    static function readFile(path:String, ?options:{encoding:String, ?flag:FsOpenFlag}):Promise<Mixed2<Buffer, String>>;
 }
