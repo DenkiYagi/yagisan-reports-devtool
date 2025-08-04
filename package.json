@@ -16,6 +16,11 @@
     "yargs": "^18.0.0"
   },
   "scripts": {
-    "build": "haxe build.hxml"
+    "build": "yarn build:lib && yarn build:bin",
+    "build:lib": "haxe build.hxml",
+    "build:bin": "node script/build.mjs"
+  },
+  "devDependencies": {
+    "esbuild": "^0.25.8"
   }
 }
