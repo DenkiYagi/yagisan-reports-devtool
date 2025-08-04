@@ -3,3 +3,6 @@ node_modules/
 lib/
 dump/
 playground/
+test/fonts/*
+!test/fonts/*.md
+test-out/
