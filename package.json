@@ -13,7 +13,7 @@
   "scripts": {
     "build": "yarn build:lib && yarn build:bin",
     "build:lib": "haxe build.hxml",
-    "build:bin": "node script/build.mjs"
+    "build:bin": "node script/build-bin.mjs"
   },
   "devDependencies": {
     "@denkiyagi/fontkit": "2.0.4-mod.2025.1",
