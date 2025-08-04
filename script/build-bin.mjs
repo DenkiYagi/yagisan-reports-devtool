@@ -9,6 +9,7 @@ void esbuild.build({
   format: "cjs",
   outfile: "bin/main.js",
   legalComments: "eof",
+  external: ["yargs", "@msgpack/msgpack"],
 }).catch((err) => {
   console.error("Build failed:");
   console.error(err);

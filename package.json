@@ -15,10 +15,12 @@
     "build:lib": "haxe build.hxml",
     "build:bin": "node script/build-bin.mjs"
   },
+  "dependencies": {
+    "@msgpack/msgpack": "^3.1.2",
+    "yargs": "^18.0.0"
+  },
   "devDependencies": {
     "@denkiyagi/fontkit": "2.0.4-mod.2025.1",
-    "@msgpack/msgpack": "^3.1.2",
-    "yargs": "^18.0.0",
     "esbuild": "^0.25.8"
   }
 }
