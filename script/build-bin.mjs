@@ -9,6 +9,9 @@ void esbuild.build({
   format: "cjs",
   outfile: "bin/main.js",
   legalComments: "eof",
+  banner: {
+    js: "#!/usr/bin/env node",
+  },
   external: ["yargs", "@msgpack/msgpack"],
 }).catch((err) => {
   console.error("Build failed:");
