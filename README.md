@@ -6,7 +6,7 @@ yagisan-reports-devtool は yagisan-reports の開発をするためのツール
 
 ## インストール
 
-```
+```sh
 npm install -D https://github.com/DenkiYagi/yagisan-reports-devtool
 ```
 
@@ -47,5 +47,21 @@ Options:
       --help     Show help                                             [boolean]
       --version  Show version number                                   [boolean]
   -A, --asset    Append asset (usage: `--asset /path/to/aseet@id`)       [array]
+  -O, --out      Set output file path                                   [string]
+```
+
+### glyphdataファイルの生成 : `glyphdata generate`
+
+```sh
+yagisan glyphdata generate <font>
+
+Generate glyphdata from a font file
+
+Positionals:
+  font  Font file path                                       [string] [required]
+
+Options:
+      --help     Show help                                             [boolean]
+      --version  Show version number                                   [boolean]
   -O, --out      Set output file path                                   [string]
 ```
