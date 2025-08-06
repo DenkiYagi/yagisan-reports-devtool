@@ -1,16 +1,12 @@
 package yagisan.reports.shared;
 
 import js.lib.Uint8Array;
-import js.npm.MsgPack;
-import yagisan.reports.core.font.glyphdata.GlyphDataGenerator.generateRawGlyphData;
-import yagisan.reports.core.font.glyphdata.MsgPackExtensionCodec;
+import yagisan.reports.core.font.GlyphDataApi.generateGlyphDataBytes;
 
 /**
 	現行形式のglyphdataを作成・展開する静的メソッドを提供します。
 **/
 class GlyphdataFormat {
-	static final codec = MsgPackExtensionCodec.createForSetMap();
-
 	/**
 		フォントファイルを元にglyphdataを生成します。
 
@@ -20,15 +16,14 @@ class GlyphdataFormat {
 		if (!Std.isOfType(fontBuffer, Uint8Array))
 			return InvalidFontBufferDataTypeError;
 
-		final rawGlyphData = switch generateRawGlyphData(fontBuffer, {}) {
+		return switch generateGlyphDataBytes(fontBuffer) {
 			case Success(glyphData, rawFont):
-				glyphData;
+				Success(glyphData);
 			case UnsupportedFontFileError(type):
-				return UnsupportedFontFileError(type);
+				UnsupportedFontFileError(type);
 			case FatalError(error):
-				return GlyphDataGeneratorFatalError(error.message);
+				GlyphDataGeneratorFatalError(error.message);
 		};
-		return Success(MsgPack.encode(rawGlyphData, {extensionCodec: codec}));
 	}
 }
 
