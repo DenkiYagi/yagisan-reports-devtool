@@ -15,7 +15,7 @@ npm install -D https://github.com/DenkiYagi/yagisan-reports-devtool
 ### yrtファイルの作成 : `yrt pack`
 
 ```sh
-yagisan yrt pack <xml...>
+npx yagisan yrt pack <xml...>
 
 Create a YRT file from an XML file and any assets
 
@@ -36,7 +36,7 @@ Options:
 yagisan-reports v1.0.0-alpha.13 以前のバージョン用のyrtファイルを作成する場合は、こちらのコマンドを使用してください。
 
 ```sh
-yagisan yrt pack-alpha <xml>
+npx yagisan yrt pack-alpha <xml>
 
 Create a YRT file from an XML file and any assets (legacy format for <= v1.0.0-alpha.13)
 
@@ -53,7 +53,7 @@ Options:
 ### glyphdataファイルの生成 : `glyphdata generate`
 
 ```sh
-yagisan glyphdata generate <font>
+npx yagisan glyphdata generate <font>
 
 Generate glyphdata from a font file
 
