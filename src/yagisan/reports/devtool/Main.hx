@@ -29,7 +29,7 @@ function main() {
                         array: true
                     });
                     subcmd.option("asset", {
-                        describe: "Append asset file (usage: `--asset /path/to/aseet@name`)",
+                        describe: "Append asset file (usage: `--asset /path/to/asset@name`)",
                         type: String,
                         array: true,
                         alias: ["A"],
@@ -69,7 +69,7 @@ function main() {
                         type: String,
                     });
                     subcmd.option("asset", {
-                        describe: "Append asset (usage: `--asset /path/to/aseet@id`)",
+                        describe: "Append asset (usage: `--asset /path/to/asset@id`)",
                         type: String,
                         array: true,
                         alias: ["A"],
