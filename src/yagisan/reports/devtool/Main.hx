@@ -9,6 +9,7 @@ import yagisan.reports.devtool.command.YrtPackCommand;
 function main() {
     final root = yargs(hideBin(process.argv))
         .scriptName("yagisan")
+        .locale("en")
         .strict(true)
         .parserConfiguration({
             greedyArrays: false,
