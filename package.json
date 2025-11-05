@@ -22,6 +22,6 @@
   },
   "devDependencies": {
     "@denkiyagi/fontkit": "2.0.4-mod.2025.1",
-    "esbuild": "^0.25.8"
+    "esbuild": "^0.25.12"
   }
 }
