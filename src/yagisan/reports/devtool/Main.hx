@@ -21,7 +21,7 @@ function main() {
         cmd -> {
             cmd.command(
                 "pack <xml...>",
-                "Create a YRT file from an XML file and any assets",
+                "Create a YRT file from XML files and any assets",
                 subcmd -> {
                     subcmd.positional("xml", {
                         describe: "XML file (usage: `/path/to/xml` or `/path/to/xml@name`)",

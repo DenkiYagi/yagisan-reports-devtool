@@ -17,7 +17,7 @@ npm install -D https://github.com/DenkiYagi/yagisan-reports-devtool
 ```sh
 npx yagisan yrt pack <xml...>
 
-Create a YRT file from an XML file and any assets
+Create a YRT file from XML files and any assets
 
 Positionals:
   xml  XML file (usage: `/path/to/xml` or `/path/to/xml@name`)
