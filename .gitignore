@@ -6,3 +6,4 @@ playground/
 test/fonts/*
 !test/fonts/*.md
 test-out/
+tmp/
