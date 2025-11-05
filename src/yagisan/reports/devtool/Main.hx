@@ -9,6 +9,7 @@ import yagisan.reports.devtool.command.YrtPackCommand;
 function main() {
     final root = yargs(hideBin(process.argv))
         .scriptName("yagisan")
+        .locale("en")
         .strict(true)
         .parserConfiguration({
             greedyArrays: false,
@@ -20,7 +21,7 @@ function main() {
         cmd -> {
             cmd.command(
                 "pack <xml...>",
-                "Create a YRT file from an XML file and any assets",
+                "Create a YRT file from XML files and any assets",
                 subcmd -> {
                     subcmd.positional("xml", {
                         describe: "XML file (usage: `/path/to/xml` or `/path/to/xml@name`)",
@@ -28,7 +29,7 @@ function main() {
                         array: true
                     });
                     subcmd.option("asset", {
-                        describe: "Append asset file (usage: `--asset /path/to/aseet@name`)",
+                        describe: "Append asset file (usage: `--asset /path/to/asset@name`)",
                         type: String,
                         array: true,
                         alias: ["A"],
@@ -68,7 +69,7 @@ function main() {
                         type: String,
                     });
                     subcmd.option("asset", {
-                        describe: "Append asset (usage: `--asset /path/to/aseet@id`)",
+                        describe: "Append asset (usage: `--asset /path/to/asset@id`)",
                         type: String,
                         array: true,
                         alias: ["A"],

@@ -31,10 +31,14 @@ final glyphdataGenerate = jsasync(function(params:GlyphdataGenerateParameter):Pr
 				glyphdata;
 			case InvalidFontBufferDataTypeError:
 				throw 'Invalid font buffer data type. Expected Uint8Array.';
+			case FontFaceDataProcessingError(errorMessage):
+				throw 'Failed to process font face data: ${errorMessage}';
 			case UnsupportedFontFileError(type):
 				throw 'Unsupported font file type: ${type}';
-			case GlyphDataGeneratorFatalError(error):
-				throw 'Fatal error during glyph data generation: ${error}';
+			case EncodingError(errorMessage):
+				throw 'Failed to encode glyph data: ${errorMessage}';
+			case GlyphDataGeneratorFatalError(errorMessage):
+				throw 'Fatal error during glyph data generation: ${errorMessage}';
 		};
 
 	final path = Path.parse(params.fontPath);

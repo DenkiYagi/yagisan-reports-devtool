@@ -25,6 +25,7 @@ extern class Parser {
     function scriptName(name:String):Parser;
     function strict(?enabled:Bool):Parser;
     function parserConfiguration(config:ParserConfigurationOptions):Parser;
+    function locale(locale:String):Parser;
 
     function usage(message:String):Parser;
 
