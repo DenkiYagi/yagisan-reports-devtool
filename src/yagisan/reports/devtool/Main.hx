@@ -3,6 +3,7 @@ package yagisan.reports.devtool;
 import js.Node.process;
 import js.npm.Commander;
 import js.npm.Commander.InvalidArgumentError;
+import yagisan.reports.devtool.BuildInfo;
 import yagisan.reports.devtool.command.GlyphdataCommand;
 import yagisan.reports.devtool.command.YrtAlphaCommand;
 import yagisan.reports.devtool.command.YrtCommand;
@@ -28,7 +29,7 @@ private function handleAsyncAction(action:haxe.Constraints.Function):haxe.Constr
 function main() {
     final program = new Command()
         .name("yagisan")
-        .version("0.20251205.0");
+        .version(BuildInfo.getVersion());
 
     // --------------------------------
     // yrt command
