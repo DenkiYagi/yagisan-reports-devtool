@@ -246,10 +246,10 @@ describe('yrt サブコマンド', () => {
       assert.ok(files.includes('assets'), 'assets directory should exist');
 
       const assetFiles = await readdir(`${unpackDir}/assets`);
-      assert.ok(assetFiles.includes('asset_asset1'), 'asset_asset1 should exist');
+      assert.ok(assetFiles.includes('asset1'), 'asset1 should exist');
 
       // Repack
-      await execBin('yrt', 'pack', `${unpackDir}/layout.xml`, '-A', `${unpackDir}/assets/asset_asset1@asset1`, '-O', yrt2);
+      await execBin('yrt', 'pack', `${unpackDir}/layout.xml`, '-A', `${unpackDir}/assets/asset1@asset1`, '-O', yrt2);
 
       // Compare
       const isSame = await compareFiles(yrt1, yrt2);
@@ -269,11 +269,11 @@ describe('yrt サブコマンド', () => {
 
       // Verify unpacked files
       const assetFiles = await readdir(`${unpackDir}/assets`);
-      assert.ok(assetFiles.includes('asset_asset1'), 'asset_asset1 should exist');
-      assert.ok(assetFiles.includes('asset_asset2'), 'asset_asset2 should exist');
+      assert.ok(assetFiles.includes('asset1'), 'asset1 should exist');
+      assert.ok(assetFiles.includes('asset2'), 'asset2 should exist');
 
       // Repack
-      await execBin('yrt', 'pack', `${unpackDir}/layout.xml`, '-A', `${unpackDir}/assets/asset_asset1@asset1`, '-A', `${unpackDir}/assets/asset_asset2@asset2`, '-O', yrt2);
+      await execBin('yrt', 'pack', `${unpackDir}/layout.xml`, '-A', `${unpackDir}/assets/asset1@asset1`, '-A', `${unpackDir}/assets/asset2@asset2`, '-O', yrt2);
 
       // Compare
       const isSame = await compareFiles(yrt1, yrt2);
@@ -357,8 +357,8 @@ describe('yrt サブコマンド', () => {
         `${unpackDir}/layout_0.xml`,
         `${unpackDir}/layout_1.xml`,
         '-S', `${unpackDir}/style.xml`,
-        '-A', `${unpackDir}/assets/asset_asset1@asset1`,
-        '-A', `${unpackDir}/assets/asset_asset2@asset2`,
+        '-A', `${unpackDir}/assets/asset1@asset1`,
+        '-A', `${unpackDir}/assets/asset2@asset2`,
         '-O', yrt2);
 
       // Compare
@@ -470,10 +470,10 @@ describe('yrt サブコマンド', () => {
       assert.ok(files.includes('assets'), 'assets directory should exist');
 
       const assetFiles = await readdir(`${unpackDir}/assets`);
-      assert.ok(assetFiles.includes('asset_asset1'), 'asset_asset1 should exist');
+      assert.ok(assetFiles.includes('asset1'), 'asset1 should exist');
 
       // Repack
-      await execBin('yrt-alpha', 'pack', `${unpackDir}/layout.xml`, '-A', `${unpackDir}/assets/asset_asset1@asset1`, '-O', yrt2);
+      await execBin('yrt-alpha', 'pack', `${unpackDir}/layout.xml`, '-A', `${unpackDir}/assets/asset1@asset1`, '-O', yrt2);
 
       // Compare
       const isSame = await compareFiles(yrt1, yrt2);
@@ -493,11 +493,11 @@ describe('yrt サブコマンド', () => {
 
       // Verify unpacked files
       const assetFiles = await readdir(`${unpackDir}/assets`);
-      assert.ok(assetFiles.includes('asset_asset1'), 'asset_asset1 should exist');
-      assert.ok(assetFiles.includes('asset_asset2'), 'asset_asset2 should exist');
+      assert.ok(assetFiles.includes('asset1'), 'asset1 should exist');
+      assert.ok(assetFiles.includes('asset2'), 'asset2 should exist');
 
       // Repack
-      await execBin('yrt-alpha', 'pack', `${unpackDir}/layout.xml`, '-A', `${unpackDir}/assets/asset_asset1@asset1`, '-A', `${unpackDir}/assets/asset_asset2@asset2`, '-O', yrt2);
+      await execBin('yrt-alpha', 'pack', `${unpackDir}/layout.xml`, '-A', `${unpackDir}/assets/asset1@asset1`, '-A', `${unpackDir}/assets/asset2@asset2`, '-O', yrt2);
 
       // Compare
       const isSame = await compareFiles(yrt1, yrt2);

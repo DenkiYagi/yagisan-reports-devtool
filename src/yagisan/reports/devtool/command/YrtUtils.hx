@@ -90,7 +90,7 @@ function writeAssetFiles(outputDir:String, assets:js.lib.Map<String, Uint8Array>
     final promises = [];
     for (id => data in assets) {
         final sanitizedId = sanitizeAssetId(id);
-        final assetPath = Path.join(assetsDir, 'asset_${sanitizedId}');
+        final assetPath = Path.join(assetsDir, sanitizedId);
         promises.push(FsPromises.writeFile(assetPath, Buffer.from(data)));
     }
 
