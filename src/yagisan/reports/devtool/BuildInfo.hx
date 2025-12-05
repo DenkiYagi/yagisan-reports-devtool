@@ -10,20 +10,18 @@ import haxe.Json;
 
 class BuildInfo {
     public static macro function getVersion():ExprOf<String> {
-        var pos = Context.currentPos();
-        var cwd = Sys.getCwd();
+        final cwd = Sys.getCwd();
 
-        // Try to find the ROOT package.json (skip build/package.json)
-        var possiblePaths = [
-            Path.join([cwd, "..", "package.json"]),  // Parent directory (for build/)
-            Path.join([cwd, "package.json"]),         // Current directory
-            Path.join([cwd, "..", "..", "package.json"])
-        ];
-
+        var currentDir = sys.FileSystem.fullPath(cwd);
         var packageJsonPath:String = null;
-        for (path in possiblePaths) {
-            if (sys.FileSystem.exists(path)) {
-                var fullPath = sys.FileSystem.fullPath(path);
+        var depth = 0;
+        final maxDepth = 10;
+
+        while (depth < maxDepth) {
+            final candidatePath = Path.join([currentDir, "package.json"]);
+
+            if (sys.FileSystem.exists(candidatePath)) {
+                final fullPath = sys.FileSystem.fullPath(candidatePath);
                 // Skip if it's the build/package.json
                 if (fullPath.indexOf("/build/package.json") == -1 &&
                     fullPath.indexOf("\\build\\package.json") == -1) {
@@ -31,21 +29,27 @@ class BuildInfo {
                     break;
                 }
             }
-        }
 
+            // Move to parent directory
+            final parentDir = Path.directory(currentDir);
+            if (parentDir == currentDir) {
+                // Reached the root directory
+                break;
+            }
+            currentDir = parentDir;
+            depth++;
+        }
         if (packageJsonPath == null) {
-            Context.error('package.json not found. Tried: ${possiblePaths.join(", ")}. CWD: $cwd', pos);
+            Context.error('package.json not found. Started from: $cwd', Context.currentPos());
         }
 
-        // Register the file as a dependency so changes trigger recompilation
         Context.registerModuleDependency(Context.getLocalModule(), packageJsonPath);
 
-        var content = File.getContent(packageJsonPath);
-        var packageData:Dynamic = Json.parse(content);
-        var version:String = packageData.version;
-
+        final content = File.getContent(packageJsonPath);
+        final packageData:Dynamic = Json.parse(content);
+        final version:String = packageData.version;
         if (version == null) {
-            Context.error("version field not found in package.json", pos);
+            Context.error("version field not found in package.json", Context.currentPos());
         }
 
         return macro $v{version};
