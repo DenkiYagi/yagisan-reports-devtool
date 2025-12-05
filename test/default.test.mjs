@@ -5,14 +5,14 @@ import { execBin, packageVersion } from './test-utils.mjs';
 describe('デフォルトコマンド', () => {
   test('引数なしのとき stderr にヘルプを表示する', async () => {
     const { stdout, stderr } = await execBin();
-    assert.match(stderr, /yagisan \[command\]/);
+    assert.match(stderr, /yagisan \[options\] \[command\]/);
     assert.match(stderr, /Commands:/);
     assert.equal(stdout, '');
   });
 
   test('--help を表示する', async () => {
     const { stdout, stderr } = await execBin('--help');
-    assert.match(stdout, /yagisan \[command\]/);
+    assert.match(stdout, /yagisan \[options\] \[command\]/);
     assert.match(stdout, /Commands:/);
     assert.equal(stderr, '');
   });

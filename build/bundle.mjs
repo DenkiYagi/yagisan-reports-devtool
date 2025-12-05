@@ -39,7 +39,7 @@ void esbuild.build({
   banner: {
     js: "#!/usr/bin/env node",
   },
-  external: ["yargs", "@msgpack/msgpack"],
+  external: ["commander", "@msgpack/msgpack"],
   plugins: [buildNodeModulesPlugin],
 }).catch((err) => {
   console.error("Build failed:");
