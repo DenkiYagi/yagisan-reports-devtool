@@ -12,41 +12,34 @@ import yagisan.reports.shared.GlyphdataFormat;
 using jsasync.JSAsyncTools;
 
 @:expose
-function glyphdataGenerateCheck(params:GlyphdataGenerateParameter):Bool {
-	if (!Fs.existsSync(params.fontPath)) {
-		throw 'Could not find font file: ${params.fontPath}';
-	}
-
-	return true;
-}
-
-@:expose
 final glyphdataGenerate = jsasync(function(params:GlyphdataGenerateParameter):Promise<Nothing> {
-	final fontBuffer = FsPromises.readFile(params.fontPath).jsawait();
+    final path = Path.parse(params.fontPath);
+    final outputPath = params.outputPath.getOrElse(Path.join(path.dir, '${path.name}.glyphdata'));
 
-	final result = GlyphdataFormat.generate(fontBuffer);
+    if (!Fs.existsSync(params.fontPath)) {
+        throw 'Could not find font file: ${params.fontPath}';
+    }
 
-	final glyphdataBuffer = switch result {
-			case Success(glyphdata):
-				glyphdata;
-			case InvalidFontBufferDataTypeError:
-				throw 'Invalid font buffer data type. Expected Uint8Array.';
-			case FontFaceDataProcessingError(errorMessage):
-				throw 'Failed to process font face data: ${errorMessage}';
-			case UnsupportedFontFileError(type):
-				throw 'Unsupported font file type: ${type}';
-			case EncodingError(errorMessage):
-				throw 'Failed to encode glyph data: ${errorMessage}';
-			case GlyphDataGeneratorFatalError(errorMessage):
-				throw 'Fatal error during glyph data generation: ${errorMessage}';
-		};
+    final fontBuffer = FsPromises.readFile(params.fontPath).jsawait();
+    final glyphdataBuffer = switch GlyphdataFormat.generate(fontBuffer) {
+            case Success(glyphdata):
+                glyphdata;
+            case InvalidFontBufferDataTypeError:
+                throw 'Invalid font buffer data type. Expected Uint8Array.';
+            case FontFaceDataProcessingError(errorMessage):
+                throw 'Failed to process font face data: ${errorMessage}';
+            case UnsupportedFontFileError(type):
+                throw 'Unsupported font file type: ${type}';
+            case EncodingError(errorMessage):
+                throw 'Failed to encode glyph data: ${errorMessage}';
+            case GlyphDataGeneratorFatalError(errorMessage):
+                throw 'Fatal error during glyph data generation: ${errorMessage}';
+        };
 
-	final path = Path.parse(params.fontPath);
-	final outputPath = params.outputPath.getOrElse(Path.join(path.dir, '${path.name}.glyphdata'));
-	FsPromises.writeFile(outputPath, Buffer.from(glyphdataBuffer), {flag: "w"}).jsawait();
+    FsPromises.writeFile(outputPath, Buffer.from(glyphdataBuffer), {flag: "w"}).jsawait();
 });
 
 typedef GlyphdataGenerateParameter = {
-	final fontPath:String;
-	final outputPath:Nullable<String>;
+    final fontPath:String;
+    final outputPath:Nullable<String>;
 }

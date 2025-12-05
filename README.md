@@ -2,7 +2,7 @@
 
 yagisan-reports-devtool は yagisan-reports の開発をするためのツールです。
 
-現時点では帳票テンプレートを作成するには本ツールの使用が必須です。
+現時点では帳票テンプレートを作成するには本ツールが必要です。
 
 ## インストール
 
@@ -12,56 +12,86 @@ npm install -D https://github.com/DenkiYagi/yagisan-reports-devtool
 
 ## リファレンス
 
-### yrtファイルの作成 : `yrt pack`
+### 帳票テンプレートファイル（yrtファイル）の操作
+
+#### yrtファイルの作成 : `yrt pack`
 
 ```sh
-npx yagisan yrt pack <xml...>
+Usage: yagisan yrt pack [options] <xml...>
 
 Create a YRT file from XML files and any assets
 
-Positionals:
-  xml  XML file (usage: `/path/to/xml` or `/path/to/xml@name`)
-                                                [array] [required] [default: []]
+Arguments:
+  xml                 XML file (usage: `/path/to/xml` or `/path/to/xml@name`)
 
 Options:
-      --help     Show help                                             [boolean]
-      --version  Show version number                                   [boolean]
-  -A, --asset    Append asset file (usage: `--asset /path/to/asset@name`)[array]
-  -S, --style    Append style xml file (usage: `--style /path/to/style`)[string]
-  -O, --out      Set output file path                        [string] [required]
+  -A, --asset <file>  Append asset file (usage: `--asset /path/to/asset@name`)
+  -S, --style <file>  Append style xml file (usage: `--style /path/to/style`)
+  -O, --out <file>    Set output file path
+  -h, --help          Display help for command
 ```
 
-### 旧型式のyrtファイルの作成 : `yrt pack-alpha`
-
-yagisan-reports v1.0.0-alpha.13 以前のバージョン用のyrtファイルを作成する場合は、こちらのコマンドを使用してください。
+#### yrtファイルの展開 : `yrt unpack`
 
 ```sh
-npx yagisan yrt pack-alpha <xml>
+Usage: yagisan yrt unpack [options] <yrt>
 
-Create a YRT file from an XML file and any assets (legacy format for <= v1.0.0-alpha.13)
+Extract contents from a YRT file
 
-Positionals:
-  xml  XML file path                                         [string] [required]
+Arguments:
+  yrt                     YRT file path
 
 Options:
-      --help     Show help                                             [boolean]
-      --version  Show version number                                   [boolean]
-  -A, --asset    Append asset (usage: `--asset /path/to/asset@id`)       [array]
-  -O, --out      Set output file path                                   [string]
+  -D, --dest <directory>  Output directory (default: same as YRT file)
+  -h, --help              Display help for command
+```
+
+### 旧型式の帳票テンプレートファイルの操作
+
+yagisan-reports v1.0.0-alpha.13 以前のバージョン用のyrtファイルを操作する場合は、こちらのコマンドを使用してください。
+
+#### yrtファイル（旧型式）の作成 : `yrt-alpha pack`
+
+```sh
+Usage: yagisan yrt-alpha pack [options] <xml>
+
+Create a YRT file from an XML file and any assets
+
+Arguments:
+  xml                 XML file path
+
+Options:
+  -A, --asset <file>  Append asset (usage: `--asset /path/to/asset@name`)
+  -O, --out <file>    Set output file path
+  -h, --help          Display help for command
+```
+
+#### yrtファイル（旧型式）の展開 : `yrt-alpha unpack`
+
+```sh
+Usage: yagisan yrt unpack [options] <yrt>
+
+Extract contents from a YRT file
+
+Arguments:
+  yrt                     YRT file path
+
+Options:
+  -D, --dest <directory>  Output directory (default: same as YRT file)
+  -h, --help              Display help for command
 ```
 
 ### glyphdataファイルの生成 : `glyphdata generate`
 
 ```sh
-npx yagisan glyphdata generate <font>
+Usage: yagisan glyphdata generate [options] <font>
 
 Generate glyphdata from a font file
 
-Positionals:
-  font  Font file path                                       [string] [required]
+Arguments:
+  font              Font file path
 
 Options:
-      --help     Show help                                             [boolean]
-      --version  Show version number                                   [boolean]
-  -O, --out      Set output file path                                   [string]
+  -O, --out <file>  Set output file path
+  -h, --help        Display help for command
 ```

@@ -1,0 +1,5 @@
+<LinearLayout>
+    <LayoutBody>
+        <Text>Test Layout</Text>
+    </LayoutBody>
+</LinearLayout>

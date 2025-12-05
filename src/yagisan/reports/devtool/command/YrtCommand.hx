@@ -2,87 +2,23 @@ package yagisan.reports.devtool.command;
 
 import extype.Nullable;
 import extype.ReadOnlyArray;
-import extype.Tuple.Tuple2;
 import js.lib.Promise;
 import js.lib.Uint8Array;
 import js.node.Buffer;
 import js.node.Fs;
 import js.node.Path;
+import jsasync.JSAsync.jsasync;
 import jsasync.Nothing;
-import yagisan.reports.shared.LegacyYrtFormat.packYrt as packLegacyYrt;
-import yagisan.reports.shared.LegacyYrtFormat.unpackYrt as unpackLegacyYrt;
+import yagisan.reports.devtool.command.YrtUtils;
 import yagisan.reports.shared.YrtFormat.YrtLayoutEntry;
 import yagisan.reports.shared.YrtFormat.YrtPackage;
 import yagisan.reports.shared.YrtFormat.pack as packYrt;
 import yagisan.reports.shared.YrtFormat.unpack as unpackYrt;
 
-@:expose
-function yrtAlphaPackCheck(params:YrtAlphaPackParameter):Bool {
-    if (!Fs.existsSync(params.xmlPath)) {
-        throw 'Could not find xml: ${params.xmlPath}';
-    }
-
-    final idSet = new js.lib.Set();
-    for (asset in params.assets) {
-        final def = parseAssetString(asset);
-        final path = def.path;
-        final id = def.id;
-
-        if (path == "" || id == "") {
-            throw 'Invalid argument: asset ${asset}';
-        }
-        if (!Fs.existsSync(path)) {
-            throw 'Could not find asset: ${path}';
-        }
-        if (idSet.has(id)) {
-            throw 'Same asset id specified: ${id}';
-        }
-
-        idSet.add(id);
-    }
-
-    return true;
-}
+using jsasync.JSAsyncTools;
 
 @:expose
-final yrtAlphaPack = jsasync(function (params:YrtAlphaPackParameter):Promise<Nothing> {
-    final xml = loadXml(params.xmlPath).jsawait();
-    final assets = loadAssets(params.assets).jsawait();
-    final template = packLegacyYrt(xml, assets);
-
-    final path = Path.parse(params.xmlPath);
-    final outputPath = params.outputPath.getOrElse(Path.join(path.dir, '${path.name}.yrt'));
-    FsPromises.writeFile(outputPath, Buffer.from(template), {flag: "w"}).jsawait();
-});
-
-function parseAssetString(value:String):AssetDefinition {
-    final tokens = value.split("@");
-    return {
-        path: tokens[0].trim(),
-        id: tokens[1]?.trim() ?? "",
-    }
-}
-
-function loadXml(xmlPath:String):Promise<String> {
-    return FsPromises.readFile(xmlPath, {encoding: 'utf-8'});
-}
-
-function loadAssets(assets:ReadOnlyArray<String>):Promise<js.lib.Map<String, Uint8Array>> {
-    return Promise.all(assets.map(asset -> {
-        final def = parseAssetString(asset);
-        final path = def.path;
-        final id = def.id;
-        FsPromises.readFile(path).then((buff:Buffer) -> new Tuple2(id, buff));
-    })).then((loadedAssets:ReadOnlyArray<Tuple2<String, Buffer>>) -> {
-        final assets = new js.lib.Map();
-        for (x in loadedAssets) {
-            assets.set(x.value1, (x.value2 : Uint8Array));
-        }
-        assets;
-    });
-}
-
-function yrtPackCheck(params:YrtPackParameter):Bool {
+final yrtPack = jsasync(function (params:YrtPackParameter):Promise<Nothing> {
     if (params.xmlPaths.length <= 0) {
         throw 'At least one XML file must be specified';
     }
@@ -117,10 +53,6 @@ function yrtPackCheck(params:YrtPackParameter):Bool {
         idSet.add(id);
     }
 
-    return true;
-}
-
-final yrtPack = jsasync(function (params:YrtPackParameter):Promise<Nothing> {
     final layouts = loadXmls(params.xmlPaths).jsawait();
     final assets = if (params.assets.length > 0) {
         loadAssets(params.assets).jsawait();
@@ -145,13 +77,42 @@ final yrtPack = jsasync(function (params:YrtPackParameter):Promise<Nothing> {
     FsPromises.writeFile(outputPath, Buffer.from(packed), {flag: "w"}).jsawait();
 });
 
-function getOutputPath(params:YrtPackParameter):String {
+@:expose
+final yrtUnpack = jsasync(function(params:YrtUnpackParameter):Promise<Nothing> {
+    if (!Fs.existsSync(params.yrtPath)) {
+        throw 'Could not find YRT file: ${params.yrtPath}';
+    }
+
+    final outputDir = determineOutputDir(params.yrtPath, params.destDir);
+    ensureDirectoryExists(outputDir);
+
+    final yrtData = FsPromises.readFile(params.yrtPath).jsawait();
+    final yrtPackage:YrtPackage = switch unpackYrt((yrtData : Uint8Array)) {
+        case Success(pkg): pkg;
+        case IllegalFormat: throw 'Invalid YRT format: ${params.yrtPath}';
+    }
+
+    writeLayoutFiles(outputDir, yrtPackage.layouts).jsawait();
+
+    if (yrtPackage.style.nonEmpty()) {
+        writeStyleFile(outputDir, yrtPackage.style.get()).jsawait();
+    }
+
+    if (yrtPackage.assets.nonEmpty()) {
+        final assets = yrtPackage.assets.get();
+        if (assets.size > 0) {
+            writeAssetFiles(outputDir, assets).jsawait();
+        }
+    }
+});
+
+private function getOutputPath(params:YrtPackParameter):String {
     final firstXmlPath = params.xmlPaths[0].split("@")[0].trim();
     final path = Path.parse(firstXmlPath);
     return params.outputPath.getOrElse(Path.join(path.dir, '${path.name}.yrt'));
 }
 
-function loadXmls(xmlPaths:ReadOnlyArray<String>):Promise<Array<YrtLayoutEntry>> {
+private function loadXmls(xmlPaths:ReadOnlyArray<String>):Promise<Array<YrtLayoutEntry>> {
     return Promise.all(xmlPaths.map(xmlPathWithName -> {
         final tokens = xmlPathWithName.split("@");
         final xmlPath = tokens[0].trim();
@@ -170,6 +131,30 @@ function loadXmls(xmlPaths:ReadOnlyArray<String>):Promise<Array<YrtLayoutEntry>>
     }));
 }
 
+private function writeLayoutFiles(outputDir:String, layouts:Array<YrtLayoutEntry>):Promise<Nothing> {
+    final promises = [];
+    for (i in 0...layouts.length) {
+        final layout = layouts[i];
+        // Determine filename
+        final filename = if (layouts.length == 1 && layout.name.isEmpty()) {
+            "layout.xml";
+        } else if (layout.name.nonEmpty()) {
+            '${sanitizeAssetId(layout.name.get())}.xml';
+        } else {
+            'layout_${i}.xml';
+        }
+
+        final layoutPath = Path.join(outputDir, filename);
+        promises.push(FsPromises.writeFile(layoutPath, Buffer.from(layout.xml, 'utf-8')));
+    }
+    return Promise.all(promises).then(_ -> null);
+}
+
+private function writeStyleFile(outputDir:String, style:String):Promise<Nothing> {
+    final stylePath = Path.join(outputDir, "style.xml");
+    return FsPromises.writeFile(stylePath, Buffer.from(style, 'utf-8')).then(_ -> null);
+}
+
 typedef YrtPackParameter = {
     final xmlPaths:ReadOnlyArray<String>;
     final assets:ReadOnlyArray<String>;
@@ -177,13 +162,7 @@ typedef YrtPackParameter = {
     final outputPath:Nullable<String>;
 }
 
-typedef YrtAlphaPackParameter = {
-    final xmlPath:String;
-    final assets:ReadOnlyArray<String>;
-    final outputPath:Nullable<String>;
-}
-
-typedef AssetDefinition = {
-    final path:String;
-    final id:String;
+typedef YrtUnpackParameter = {
+    final yrtPath:String;
+    final destDir:Nullable<String>;
 }
