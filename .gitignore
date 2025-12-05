@@ -7,3 +7,7 @@ test/fonts/*
 !test/fonts/*.md
 test-out/
 tmp/
+yarn.lock
+build/node_modules/
+build/yarn.lock
+build/package-lock.json

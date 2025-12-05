@@ -1,6 +1,6 @@
 {
   "name": "yagisan-reports-devtool",
-  "version": "0.20251105.0",
+  "version": "0.20251205.0",
   "description": "yagisan-reports development tool",
   "author": {
     "name": "DenkiYagi Inc.",
@@ -12,16 +12,10 @@
   },
   "scripts": {
     "test": "node --test",
-    "build": "yarn build:lib && yarn build:bin",
-    "build:lib": "haxe build.hxml",
-    "build:bin": "node script/build-bin.mjs"
+    "build": "node build/build-wrapper.mjs"
   },
   "dependencies": {
     "@msgpack/msgpack": "^3.1.2",
     "yargs": "^18.0.0"
-  },
-  "devDependencies": {
-    "@denkiyagi/fontkit": "2.0.4-mod.2025.2",
-    "esbuild": "^0.25.12"
   }
 }

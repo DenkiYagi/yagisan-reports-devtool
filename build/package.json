@@ -1,0 +1,14 @@
+{
+  "name": "yagisan-reports-devtool-build",
+  "version": "0.20251205.0",
+  "description": "Build dependencies for yagisan-reports-devtool",
+  "private": true,
+  "scripts": {
+    "compile": "haxe compile.hxml",
+    "bundle": "node bundle.mjs"
+  },
+  "dependencies": {
+    "@denkiyagi/fontkit": "2.0.4-mod.2025.2",
+    "esbuild": "^0.25.12"
+  }
+}
