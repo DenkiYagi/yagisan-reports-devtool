@@ -13,7 +13,7 @@ console.log("Starting build process...\n");
 // Step 1: Ensure build dependencies are installed
 console.log("1/3 Installing build dependencies...");
 try {
-  execSync("yarn install --frozen-lockfile", {
+  execSync("pnpm install --frozen-lockfile", {
     cwd: buildDir,
     stdio: "inherit"
   });
@@ -42,7 +42,7 @@ try {
 // Step 3: Run esbuild bundling
 console.log("\n3/3 Bundling with esbuild...");
 try {
-  execSync(`node build/bundle.mjs`, {
+  execSync(`node build/bundle.js`, {
     cwd: rootDir,
     stdio: "inherit"
   });

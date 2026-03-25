@@ -3,8 +3,10 @@
 --library extype
 --library jsasync
 --library yagisan-reports-core
+--library jsImport
 --main yagisan.reports.devtool.Main
 --js ../lib/yagisan-reports-devtool.js
 --dce full
 --define analyzer-optimize
 -D js-es=6
+-D jsImport

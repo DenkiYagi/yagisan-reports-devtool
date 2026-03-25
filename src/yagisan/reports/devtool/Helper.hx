@@ -9,7 +9,11 @@ function isEmpty(x:Null<String>):Bool {
     return x == null || x.length <= 0;
 }
 
+#if jsImport
+@:js.import(@star "node:fs/promises")
+#else
 @:jsRequire("node:fs/promises")
+#end
 extern class FsPromises {
     static function writeFile(filename:FsPath, data:Buffer, ?options:Mixed2<String, FsWriteFileOptions>):Promise<Void>;
     static function readFile(path:String, ?options:{encoding:String, ?flag:FsOpenFlag}):Promise<Mixed2<Buffer, String>>;

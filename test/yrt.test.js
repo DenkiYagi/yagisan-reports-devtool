@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { describe, test, beforeEach, afterEach } from 'node:test';
 import { rm, mkdir, readdir } from 'node:fs/promises';
-import { execBin, packageVersion, compareFiles } from './test-utils.mjs';
+import { execBin, packageVersion, compareFiles } from './test-utils.js';
 
 describe('yrt サブコマンド', () => {
   test('引数なしのとき stderr にヘルプを表示する', async () => {

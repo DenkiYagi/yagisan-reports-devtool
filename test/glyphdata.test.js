@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { describe, test } from 'node:test';
-import { changeExtension, execBin, packageVersion } from './test-utils.mjs';
+import { changeExtension, execBin, packageVersion } from './test-utils.js';
 import { readdir, rm, stat, unlink, mkdir } from 'node:fs/promises';
 import { basename, join } from 'node:path';
 

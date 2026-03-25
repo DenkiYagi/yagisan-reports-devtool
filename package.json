@@ -1,18 +1,19 @@
 {
   "name": "yagisan-reports-devtool",
-  "version": "0.20251205.1",
+  "version": "0.20260325.1",
   "description": "yagisan-reports development tool",
   "author": {
     "name": "DenkiYagi Inc.",
     "url": "https://denkiyagi.jp/"
   },
   "license": "Apache-2.0",
+  "type": "module",
   "bin": {
     "yagisan": "bin/main.js"
   },
   "scripts": {
-    "build": "node build/build-wrapper.mjs",
-    "test": "npm run build && node --test"
+    "build": "node build/build-wrapper.js",
+    "test": "pnpm build && node --test"
   },
   "dependencies": {
     "@msgpack/msgpack": "^3.1.2",

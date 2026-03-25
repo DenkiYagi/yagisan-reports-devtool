@@ -7,7 +7,6 @@ test/fonts/*
 !test/fonts/*.md
 test-out/
 tmp/
-yarn.lock
+pnpm-lock.yaml
 build/node_modules/
-build/yarn.lock
-build/package-lock.json
+build/pnpm-lock.yaml
