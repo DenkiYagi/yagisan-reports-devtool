@@ -3,9 +3,13 @@
   "version": "0.20251205.0",
   "description": "Build dependencies for yagisan-reports-devtool",
   "private": true,
+  "type": "module",
   "scripts": {
     "compile": "haxe compile.hxml",
-    "bundle": "node bundle.mjs"
+    "bundle": "node bundle.js"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": ["esbuild"]
   },
   "dependencies": {
     "@denkiyagi/fontkit": "2.0.4-mod.2025.2",

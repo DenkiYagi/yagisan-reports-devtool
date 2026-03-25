@@ -3,12 +3,20 @@ package js.npm;
 import haxe.Constraints.Function;
 import js.lib.Promise;
 
+#if jsImport
+@:js.import("commander", "InvalidArgumentError")
+#else
 @:jsRequire("commander", "InvalidArgumentError")
+#end
 extern class InvalidArgumentError {
     function new(message:String);
 }
 
+#if jsImport
+@:js.import("commander", "Command")
+#else
 @:jsRequire("commander", "Command")
+#end
 extern class Command {
     function new();
 

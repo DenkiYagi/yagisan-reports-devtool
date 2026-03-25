@@ -102,6 +102,6 @@ function writeAssetFiles(outputDir:String, assets:js.lib.Map<String, Uint8Array>
  */
 function ensureDirectoryExists(dir:String):Void {
     if (!Fs.existsSync(dir)) {
-        js.Syntax.code("require('fs').mkdirSync({0}, {recursive: true})", dir);
+        js.Syntax.code("{0}.mkdirSync({1}, {recursive: true})", Fs, dir);
     }
 }

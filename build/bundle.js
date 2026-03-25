@@ -13,14 +13,12 @@ const buildNodeModulesPlugin = {
     build.onResolve({ filter: /@denkiyagi\/fontkit/ }, args => {
       const modulePath = path.join(__dirname, "node_modules", args.path);
       if (fs.existsSync(modulePath)) {
-        // Read package.json to find the entry point
         const packageJsonPath = path.join(modulePath, "package.json");
         if (fs.existsSync(packageJsonPath)) {
           const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, "utf8"));
-          const entryPoint = packageJson.main || "index.js";
+          const entryPoint = packageJson.exports?.node?.import || packageJson.main || "index.js";
           return { path: path.join(modulePath, entryPoint) };
         }
-        // Fallback to index.js
         return { path: path.join(modulePath, "index.js") };
       }
     });
@@ -33,11 +31,11 @@ void esbuild.build({
   minify: true,
   platform: "node",
   target: ["node20", "es2020"],
-  format: "cjs",
+  format: "esm",
   outfile: path.join(rootDir, "bin/main.js"),
   legalComments: "eof",
   banner: {
-    js: "#!/usr/bin/env node",
+    js: "#!/usr/bin/env node\nvar exports = {};",
   },
   external: ["commander", "@msgpack/msgpack"],
   plugins: [buildNodeModulesPlugin],

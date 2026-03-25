@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { describe, test } from 'node:test';
-import { execBin, packageVersion } from './test-utils.mjs';
+import { execBin, packageVersion } from './test-utils.js';
 
 describe('デフォルトコマンド', () => {
   test('引数なしのとき stderr にヘルプを表示する', async () => {
