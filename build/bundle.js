@@ -35,9 +35,9 @@ void esbuild.build({
   outfile: path.join(rootDir, "bin/main.js"),
   legalComments: "eof",
   banner: {
-    js: "#!/usr/bin/env node\nvar exports = {};",
+    js: "#!/usr/bin/env node\nimport { createRequire } from \"module\"; const require = createRequire(import.meta.url);\nvar exports = {};",
   },
-  external: ["commander", "@msgpack/msgpack"],
+  external: [],
   plugins: [buildNodeModulesPlugin],
 }).catch((err) => {
   console.error("Build failed:");

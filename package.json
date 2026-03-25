@@ -19,8 +19,5 @@
     "build": "node build/build-wrapper.js",
     "test": "pnpm build && node --test"
   },
-  "dependencies": {
-    "@msgpack/msgpack": "^3.1.2",
-    "commander": "^14.0.2"
-  }
+  "dependencies": {}
 }
