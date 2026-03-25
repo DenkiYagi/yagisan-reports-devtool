@@ -11,6 +11,10 @@
   "bin": {
     "yagisan": "bin/main.js"
   },
+  "files": [
+    "bin/main.js",
+    "THIRD_PARTY_NOTICES.md"
+  ],
   "scripts": {
     "build": "node build/build-wrapper.js",
     "test": "pnpm build && node --test"
